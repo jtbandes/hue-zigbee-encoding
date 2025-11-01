@@ -1,0 +1,12 @@
+[project]
+name = "hue-zigbee-encoding"
+version = "0.1.0"
+description = "Binary encoding and decoding of Zigbee messages for Hue lights"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE.md"]
+requires-python = ">=3.10"
+dependencies = []
+
+[dependency-groups]
+dev = ["black>=25.9.0", "pytest>=8.4.2"]

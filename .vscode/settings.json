@@ -1,0 +1,7 @@
+{
+  "python.analysis.typeCheckingMode": "strict",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  }
+}
