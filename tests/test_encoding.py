@@ -1,6 +1,8 @@
 import pytest
 
 from hue_zigbee_encoding import (
+    HueLightColorXY,
+    HueLightColorXYScaled,
     HueLightEffect,
     HueLightGradient,
     HueLightGradientStyle,
@@ -16,7 +18,10 @@ from hue_zigbee_encoding import (
         (HueLightUpdateMessage(on_off=True), b"\x01\x00\x01"),
         (HueLightUpdateMessage(brightness=0x7F), b"\x02\x00\x7f"),
         (HueLightUpdateMessage(color_temperature=0x1234), b"\x04\x00\x34\x12"),
-        (HueLightUpdateMessage(color_xy=(0.5, 0.25)), b"\x08\x00\xff\x7f\xff\x3f"),
+        (
+            HueLightUpdateMessage(color_xy=HueLightColorXY(x=0.5, y=0.25)),
+            b"\x08\x00\xff\x7f\xff\x3f",
+        ),
         (HueLightUpdateMessage(transition_time=0x1234), b"\x10\x00\x34\x12"),
         (HueLightUpdateMessage(effect=HueLightEffect.SUNSET), b"\x20\x00\x0d"),
         (
@@ -40,7 +45,16 @@ from hue_zigbee_encoding import (
                     style=HueLightGradientStyle.SCATTERED,
                     scale=0xCC / 8,
                     offset=0xDD / 8,
-                    colors=[(0x123, 0xABC), (0x789, 0xDEF)],
+                    colors=[
+                        HueLightColorXY(
+                            x=0x123 / 0xFFF * HueLightColorXYScaled.SCALING_MAX_X,
+                            y=0xABC / 0xFFF * HueLightColorXYScaled.SCALING_MAX_Y,
+                        ),
+                        HueLightColorXY(
+                            x=0x789 / 0xFFF * HueLightColorXYScaled.SCALING_MAX_X,
+                            y=0xDEF / 0xFFF * HueLightColorXYScaled.SCALING_MAX_Y,
+                        ),
+                    ],
                 )
             ),
             b"\x40\x01"  # flags

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import enum
 import struct
 from dataclasses import dataclass
@@ -35,26 +37,73 @@ class HueLightEffect(enum.IntEnum):
     ENCHANT = 0x11
 
 
+@dataclass(kw_only=True)
+class HueLightColorXYScaled:
+    """
+    Color specified as XY coordinates scaled to the range 0-0xFFF, corresponding
+    to a maximum X=0.7347 and Y=0.8264 (determined experimentally by Christian
+    Iversen).
+    """
+
+    x: int
+    y: int
+
+    SCALING_MAX_X = 0.7347
+    SCALING_MAX_Y = 0.8264
+
+    def to_bytes(self) -> bytes:
+        return bytes(
+            (
+                self.x & 0x0FF,
+                (self.x & 0xF00) >> 8 | (self.y & 0x00F) << 4,
+                (self.y & 0xFF0) >> 4,
+            )
+        )
+
+
+@dataclass(kw_only=True)
+class HueLightColorXY:
+    """
+    Color specified as XY coordinates in the range 0-1
+    """
+
+    x: float
+    y: float
+
+    def to_scaled(self) -> HueLightColorXYScaled:
+        return HueLightColorXYScaled(
+            x=int(0xFFF * max(0, min(self.x / HueLightColorXYScaled.SCALING_MAX_X, 1))),
+            y=int(0xFFF * max(0, min(self.y / HueLightColorXYScaled.SCALING_MAX_Y, 1))),
+        )
+
+    @classmethod
+    def from_scaled(cls, scaled: HueLightColorXYScaled) -> HueLightColorXY:
+        return cls(
+            x=scaled.x / 0xFFF * HueLightColorXYScaled.SCALING_MAX_X,
+            y=scaled.y / 0xFFF * HueLightColorXYScaled.SCALING_MAX_Y,
+        )
+
+
 class HueLightGradientStyle(enum.IntEnum):
     LINEAR = 0x00
     SCATTERED = 0x02
     MIRRORED = 0x04
 
 
-@dataclass
+@dataclass(kw_only=True)
 class HueLightGradient:
     style: HueLightGradientStyle
     scale: float
     offset: float
-    colors: list[tuple[float, float]]
+    colors: list[HueLightColorXY]
 
 
-@dataclass
+@dataclass(kw_only=True)
 class HueLightUpdateMessage:
     on_off: bool | None = None
     brightness: int | None = None
     color_temperature: int | None = None
-    color_xy: tuple[float, float] | None = None
+    color_xy: HueLightColorXY | None = None
     transition_time: int | None = None
     effect: HueLightEffect | None = None
     gradient: HueLightGradient | None = None
@@ -76,8 +125,8 @@ class HueLightUpdateMessage:
             result += _uint16.pack(self.color_temperature)
         if self.color_xy is not None:
             flags |= _Flags.COLOR_XY
-            result.extend(_uint16.pack(int(self.color_xy[0] * 0xFFFF)))
-            result.extend(_uint16.pack(int(self.color_xy[1] * 0xFFFF)))
+            result.extend(_uint16.pack(int(self.color_xy.x * 0xFFFF)))
+            result.extend(_uint16.pack(int(self.color_xy.y * 0xFFFF)))
         if self.transition_time is not None:
             flags |= _Flags.TRANSITION_TIME
             result += _uint16.pack(self.transition_time)
@@ -96,14 +145,8 @@ class HueLightUpdateMessage:
                     0,
                 )
             )
-            for x, y in self.gradient.colors:
-                result.extend(
-                    (
-                        x & 0x0FF,
-                        (x & 0xF00) >> 8 | (y & 0x00F) << 4,
-                        (y & 0xFF0) >> 4,
-                    )
-                )
+            for color in self.gradient.colors:
+                result.extend(color.to_scaled().to_bytes())
         if self.effect_speed is not None:
             flags |= _Flags.EFFECT_SPEED
             result.append(self.effect_speed)
