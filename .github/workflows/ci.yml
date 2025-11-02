@@ -18,11 +18,8 @@ jobs:
 
       - run: uv sync --locked --dev
       - run: uv run mypy .
-
-      - uses: astral-sh/ruff-action@v3
-      - uses: astral-sh/ruff-action@v3
-        with:
-          args: format --check
+      - run: uv run ruff check --output-format=github
+      - run: uv run ruff format --check --output-format=github
 
   test:
     runs-on: ubuntu-latest

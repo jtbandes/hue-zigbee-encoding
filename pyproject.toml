@@ -21,6 +21,9 @@ dev = ["mypy>=1.18.2", "pytest>=8.4.2", "ruff>=0.14.3"]
 requires = ["uv_build>=0.9.7,<0.10.0"]
 build-backend = "uv_build"
 
+[tool.ruff]
+preview = true
+
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
