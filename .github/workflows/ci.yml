@@ -18,8 +18,12 @@ jobs:
 
       - run: uv sync --locked --dev
       - run: uv run mypy .
+
       - run: uv run ruff check --output-format=github
+        id: ruff-check
       - run: uv run ruff format --check --output-format=github
+        # run format even if ruff check failed
+        if: success() || steps.ruff-check.conclusion == 'failure'
 
   test:
     runs-on: ubuntu-latest
