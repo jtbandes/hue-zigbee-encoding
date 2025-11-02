@@ -28,7 +28,7 @@ combined into one object. It supports conversion to and from `bytes`:
 from hue_zigbee_encoding import HueLightUpdateMessage
 
 # Convert to bytes: returns b"\x03\x00\x01\x7f"
-HueLightUpdateMessage(on_off=True, brightness=127).to_bytes()
+HueLightUpdateMessage(is_on=True, brightness=127).to_bytes()
 
 # Convert from bytes: returns a HueLightUpdateMessage object
 HueLightUpdateMessage.from_bytes(b"\x03\x00\x01\x7f")
@@ -38,7 +38,7 @@ Use `hex` and `fromhex` to convert to and from printable strings:
 
 ```py
 # Convert to a hex string: returns "0300017f"
-HueLightUpdateMessage(on_off=True, brightness=127).to_bytes().hex()
+HueLightUpdateMessage(is_on=True, brightness=127).to_bytes().hex()
 
 # Convert from a hex string: returns a HueLightUpdateMessage object
 HueLightUpdateMessage.from_bytes(bytes.fromhex("0300017f"))
@@ -51,7 +51,7 @@ a subset of attributes to change only those settings of Hue lights.
 
 | Attribute         | Type                                                                   | Description                                                                                              |
 | ----------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `on_off`          | `bool \| None`                                                         | Set to `True` to turn the light on, `False` to turn off.                                                 |
+| `is_on`           | `bool \| None`                                                         | Set to `True` to turn the light on, `False` to turn off.                                                 |
 | `brightness`      | `int \| None`                                                          | 0–255 (0xFF), although only values 1 (dimmest) through 254 (brightest) are valid.                        |
 | `color_temp`      | <code>[HueLightColorMired](#huelightcolormired) \| None</code>         | Color temperature in mireds. You can also use `HueLightColorMired.from_kelvin()` to convert from Kelvin. |
 | `color_xy`        | <code>[HueLightColorXY](#huelightcolorxy) \| None</code>               | Color as XY values. See also: https://viereck.ch/hue-xy-rgb/                                             |

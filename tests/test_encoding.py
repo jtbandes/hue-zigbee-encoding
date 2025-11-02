@@ -16,8 +16,8 @@ from hue_zigbee_encoding import (
     "message,expected_bytes",
     [
         (HueLightUpdateMessage(), b"\x00\x00"),
-        (HueLightUpdateMessage(on_off=False), b"\x01\x00\x00"),
-        (HueLightUpdateMessage(on_off=True), b"\x01\x00\x01"),
+        (HueLightUpdateMessage(is_on=False), b"\x01\x00\x00"),
+        (HueLightUpdateMessage(is_on=True), b"\x01\x00\x01"),
         (HueLightUpdateMessage(brightness=0x7F), b"\x02\x00\x7f"),
         (
             HueLightUpdateMessage(color_temp=HueLightColorMired(mired=0x1234)),
@@ -109,7 +109,7 @@ def test_encoding_xy_scaled():
         (
             bytes.fromhex("ab00012e6f2f40100f7f"),
             HueLightUpdateMessage(
-                on_off=True,
+                is_on=True,
                 brightness=46,
                 color_xy=HueLightColorXY(x=0.18529030289158466, y=0.06347753109025711),
                 effect=HueLightEffect.COSMOS,
@@ -119,14 +119,14 @@ def test_encoding_xy_scaled():
         (
             bytes.fromhex("19000132518f530400"),
             HueLightUpdateMessage(
-                on_off=True,
+                is_on=True,
                 color_xy=HueLightColorXY(x=0.3171740291447318, y=0.32640573739223316),
                 transition_time=4,
             ),
         ),
         (
             bytes.fromhex("1100000800"),
-            HueLightUpdateMessage(on_off=False, transition_time=8),
+            HueLightUpdateMessage(is_on=False, transition_time=8),
         ),
     ],
 )

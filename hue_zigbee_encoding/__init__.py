@@ -165,7 +165,7 @@ class HueLightUpdateMessage:
     Use `HueLightUpdateMessage.from_bytes(bytes.fromhex(...))` to parse a hex string into a HueLightUpdateMessage object.
 
     Attributes:
-        on_off: Set to True to turn the light on, False to turn off.
+        is_on: Set to True to turn the light on, False to turn off.
         brightness: 0-255 (0xFF), although only values 1 (dimmest) through 254 (brightest) are valid.
         color_temp: Color temperature in mireds. You can also use HueLightColorMired.from_kelvin() to convert from Kelvin.
         color_xy: Color as XY values. See also: https://viereck.ch/hue-xy-rgb/
@@ -176,7 +176,7 @@ class HueLightUpdateMessage:
         gradient_params: Gradient scale and offset parameters (for light strips).
     """
 
-    on_off: bool | None = None
+    is_on: bool | None = None
     brightness: int | None = None
     color_temp: HueLightColorMired | None = None
     color_xy: HueLightColorXY | None = None
@@ -189,9 +189,9 @@ class HueLightUpdateMessage:
     def to_bytes(self) -> bytes:
         result = bytearray()
         flags = _Flags(0)
-        if self.on_off is not None:
+        if self.is_on is not None:
             flags |= _Flags.ON_OFF
-            result.append(1 if self.on_off else 0)
+            result.append(1 if self.is_on else 0)
         if self.brightness is not None:
             if not (1 <= self.brightness <= 254):
                 raise ValueError("Brightness must be between 1 and 254")
@@ -240,7 +240,7 @@ class HueLightUpdateMessage:
         flags = _Flags(_uint16.unpack_from(data, 0)[0])
         offset = _uint16.size
         if _Flags.ON_OFF in flags:
-            result.on_off = data[offset] != 0
+            result.is_on = data[offset] != 0
             offset += 1
         if _Flags.BRIGHTNESS in flags:
             result.brightness = data[offset]
