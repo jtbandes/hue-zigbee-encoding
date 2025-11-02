@@ -85,7 +85,7 @@ class HueLightColorXYScaled:
 @dataclass(kw_only=True)
 class HueLightColorXY:
     """
-    Color specified as XY coordinates in the range 0-1.
+    Color specified as XY coordinates in the range 0-1. See also: https://viereck.ch/hue-xy-rgb/
     """
 
     x: float
@@ -126,6 +126,10 @@ class HueLightGradientStyle(enum.IntEnum):
 
 @dataclass(kw_only=True)
 class HueLightGradient:
+    """
+    A custom gradient on a light strip.
+    """
+
     style: HueLightGradientStyle
     colors: list[HueLightColorXY]
 
@@ -164,7 +168,7 @@ class HueLightUpdateMessage:
         on_off: Set to True to turn the light on, False to turn off.
         brightness: 0-255 (0xFF), although only values 1 (dimmest) through 254 (brightest) are valid.
         color_temp: Color temperature in mireds. You can also use HueLightColorMired.from_kelvin() to convert from Kelvin.
-        color_xy: Color as XY values.
+        color_xy: Color as XY values. See also: https://viereck.ch/hue-xy-rgb/
         transition_time: 0-65535 (0xFFFF). Use 0 for an instantaneous transition, higher numbers for a slower fade.
         effect: Specify one of the light effects from the HueLightEffect enum.
         effect_speed: Animation speed of the selected effect: 0 (slowest) to 255 (fastest).
