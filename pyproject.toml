@@ -30,6 +30,9 @@ ignore = [
     "EM",      # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
     "PLR2004", # https://docs.astral.sh/ruff/rules/magic-value-comparison/
     "TRY003",  # https://docs.astral.sh/ruff/rules/raise-vanilla-args/
+
+    # Conflicts with ruff format:
+    "COM812",
 ]
 
 [tool.ruff.lint.per-file-ignores]

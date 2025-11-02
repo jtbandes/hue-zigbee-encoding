@@ -252,6 +252,7 @@ class HueLightUpdateMessage:
             flags |= _Flags.EFFECT_SPEED
             result.append(self.effect_speed)
         if self.gradient_params is not None:
+
             flags |= _Flags.GRADIENT_PARAMS
             result.append(int(self.gradient_params.scale * 8))
             result.append(int(self.gradient_params.offset * 8))
