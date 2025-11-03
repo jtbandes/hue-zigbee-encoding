@@ -11,6 +11,7 @@ from __future__ import annotations
 import enum
 import struct
 from dataclasses import dataclass
+from typing import ClassVar
 
 HUE_LIGHT_EFFECT_CLUSTER_ID = 0xFC03
 HUE_VENDOR_ID = 0x100B
@@ -62,8 +63,8 @@ class HueLightColorXYScaled:
     x: int
     y: int
 
-    SCALING_MAX_X = 0.7347
-    SCALING_MAX_Y = 0.8264
+    SCALING_MAX_X: ClassVar[float] = 0.7347
+    SCALING_MAX_Y: ClassVar[float] = 0.8264
 
     def to_bytes(self) -> bytes:
         """Serialize to a 3-byte byte string."""
@@ -252,7 +253,6 @@ class HueLightUpdateMessage:
             flags |= _Flags.EFFECT_SPEED
             result.append(self.effect_speed)
         if self.gradient_params is not None:
-
             flags |= _Flags.GRADIENT_PARAMS
             result.append(int(self.gradient_params.scale * 8))
             result.append(int(self.gradient_params.offset * 8))
