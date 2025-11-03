@@ -2,11 +2,53 @@
 name = "hue-zigbee-encoding"
 version = "0.1.0"
 description = "Binary encoding and decoding of Zigbee messages for Hue lights"
+authors = [{ name = "Jacob Bandes-Storch" }]
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE.md"]
 requires-python = ">=3.10"
 dependencies = []
 
+[project.urls]
+source = "https://github.com/jtbandes/hue-zigbee-encoding"
+issues = "https://github.com/jtbandes/hue-zigbee-encoding/issues"
+donate = "https://github.com/sponsors/jtbandes"
+
 [dependency-groups]
-dev = ["black>=25.9.0", "pytest>=8.4.2"]
+dev = [
+    "mypy>=1.18.2",
+    "pytest>=8.4.2",
+    "pytest-github-actions-annotate-failures>=0.3.0",
+    "ruff>=0.14.3",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.7,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+preview = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "C901",    # https://docs.astral.sh/ruff/rules/complex-structure/
+    "CPY",     # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+    "D203",    # https://docs.astral.sh/ruff/rules/incorrect-blank-line-before-class/ (conflicts with D211)
+    "D212",    # https://docs.astral.sh/ruff/rules/multi-line-summary-first-line/ (conflicts with D213)
+    "DOC201",  # https://docs.astral.sh/ruff/rules/docstring-missing-returns/
+    "DOC501",  # https://docs.astral.sh/ruff/rules/docstring-missing-exception/
+    "EM",      # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
+    "PLR2004", # https://docs.astral.sh/ruff/rules/magic-value-comparison/
+    "TRY003",  # https://docs.astral.sh/ruff/rules/raise-vanilla-args/
+
+    # Conflicts with ruff format:
+    "COM812",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "ANN201", # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function/
+    "D",      # https://docs.astral.sh/ruff/rules/#pydocstyle-d
+    "S101",   # https://docs.astral.sh/ruff/rules/assert/#assert-s101
+]

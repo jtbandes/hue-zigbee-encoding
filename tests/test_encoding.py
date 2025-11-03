@@ -13,7 +13,7 @@ from hue_zigbee_encoding import (
 
 
 @pytest.mark.parametrize(
-    "message,expected_bytes",
+    ("message", "expected_bytes"),
     [
         (HueLightUpdateMessage(), b"\x00\x00"),
         (HueLightUpdateMessage(is_on=False), b"\x01\x00\x00"),
@@ -25,7 +25,7 @@ from hue_zigbee_encoding import (
         ),
         (
             HueLightUpdateMessage(
-                color_xy=HueLightColorXY(x=0x6677 / 0xFFFF, y=0x2233 / 0xFFFF)
+                color_xy=HueLightColorXY(x=0x6677 / 0xFFFF, y=0x2233 / 0xFFFF),
             ),
             b"\x08\x00\x77\x66\x33\x22",
         ),
@@ -104,7 +104,7 @@ def test_encoding_xy_scaled():
 
 
 @pytest.mark.parametrize(
-    "data,expected_message",
+    ("data", "expected_message"),
     [
         (
             bytes.fromhex("ab00012e6f2f40100f7f"),
