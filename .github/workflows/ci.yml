@@ -40,6 +40,7 @@ jobs:
       - run: uv publish --dry-run --trusted-publishing never
 
   publish-testpypi:
+    if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' }}
     needs: [lint, test]
     runs-on: ubuntu-latest
     permissions:
@@ -52,11 +53,15 @@ jobs:
       - uses: astral-sh/setup-uv@v6
 
       - run: uv build
-      - run: uv publish --dry-run --check-url https://test.pypi.org/simple/ --publish-url https://test.pypi.org/legacy/
-      - run: uv publish --check-url https://test.pypi.org/simple/ --publish-url https://test.pypi.org/legacy/
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
+          attestations: false # https://github.com/pypa/gh-action-pypi-publish/issues/283#issuecomment-2499296440
 
   publish-pypi:
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]'
     needs: [lint, test, publish-testpypi]
     runs-on: ubuntu-latest
     environment:
@@ -72,4 +77,5 @@ jobs:
       - uses: astral-sh/setup-uv@v6
 
       - run: uv build
-      - run: uv publish
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
