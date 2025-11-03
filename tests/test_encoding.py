@@ -15,7 +15,7 @@ from hue_zigbee_encoding import (
 @pytest.mark.parametrize(
     ("message", "expected_bytes"),
     [
-        (HueLightUpdateMessage(), b"\x00\x00\x01"),
+        (HueLightUpdateMessage(), b"\x00\x00"),
         (HueLightUpdateMessage(is_on=False), b"\x01\x00\x00"),
         (HueLightUpdateMessage(is_on=True), b"\x01\x00\x01"),
         (HueLightUpdateMessage(brightness=0x7F), b"\x02\x00\x7f"),
