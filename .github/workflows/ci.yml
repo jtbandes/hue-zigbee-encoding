@@ -37,7 +37,6 @@ jobs:
       - run: uv sync --locked --dev
       - run: uv run pytest -v
       - run: uv build
-      - run: uv publish --dry-run --trusted-publishing never
 
   publish-testpypi:
     if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' }}
