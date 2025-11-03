@@ -52,6 +52,7 @@ jobs:
       - uses: astral-sh/setup-uv@v6
 
       - run: uv build
+      - run: uv publish --dry-run --check-url https://test.pypi.org/simple/ --publish-url https://test.pypi.org/legacy/
       - run: uv publish --check-url https://test.pypi.org/simple/ --publish-url https://test.pypi.org/legacy/
 
   publish-pypi:
