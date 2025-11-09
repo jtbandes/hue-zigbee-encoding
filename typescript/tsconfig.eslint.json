@@ -1,0 +1,7 @@
+{
+  "extends": "@foxglove/tsconfig/base",
+  "include": ["./**/*"],
+  "compilerOptions": {
+    "noEmit": true
+  }
+}
