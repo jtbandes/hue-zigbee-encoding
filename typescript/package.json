@@ -1,0 +1,38 @@
+{
+  "name": "hue-zigbee-encoding",
+  "version": "0.1.0",
+  "description": "Binary encoding and decoding of Zigbee messages for Hue lights",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/jtbandes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jtbandes/hue-zigbee-encoding.git"
+  },
+  "author": {
+    "name": "Jacob Bandes-Storch"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist",
+    "!dist/*.tsbuildinfo",
+    "src"
+  ],
+  "scripts": {
+    "prepack": "tsc -b tsconfig.json tsconfig.cjs.json",
+    "build": "tsc -b tsconfig.json tsconfig.cjs.json",
+    "lint": "eslint",
+    "test": "vitest run",
+    "typecheck": "cd .. && tsc --noEmit -p typescript/tsconfig.eslint.json"
+  },
+  "devDependencies": {
+    "@foxglove/eslint-plugin": "2.1.0",
+    "@foxglove/tsconfig": "2.0.0",
+    "eslint": "9.39.1",
+    "jiti": "2.6.1",
+    "prettier": "3.6.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.46.3",
+    "vitest": "4.0.8"
+  }
+}

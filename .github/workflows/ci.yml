@@ -93,3 +93,49 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: python/dist
+
+  typescript-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: typescript
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+
+      - run: npm ci
+      - run: npm run lint
+        id: lint
+      - run: npm run typecheck
+        # run typecheck even if lint failed
+        if: success() || steps.lint.conclusion == 'failure'
+
+  typescript-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: typescript
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+
+      - run: npm ci
+      - run: npm run test
+
+  typescript-publish:
+    needs: [typescript-lint, typescript-test]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    defaults:
+      run:
+        working-directory: typescript
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+
+      - run: npm ci
+      - run: npm publish --dry-run
+
+      - run: npm publish
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]'
