@@ -23,7 +23,7 @@
     "build": "tsc -b tsconfig.json tsconfig.cjs.json",
     "lint": "eslint",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit -p tsconfig.eslint.json"
+    "typecheck": "cd .. && tsc --noEmit -p typescript/tsconfig.eslint.json"
   },
   "devDependencies": {
     "@foxglove/eslint-plugin": "2.1.0",
