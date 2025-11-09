@@ -16,13 +16,10 @@ function binaryStringToBytes(str: string): Uint8Array {
 }
 
 describe("binaryStringToBytes", () => {
-  const x: number = "hi";
-  void x;
   it.each([
     ["", []],
     ["\x7f", [0x7f]],
     ["\x00\xff\x02\xfe", [0x00, 0xff, 0x02, 0xfe]],
-    ["wrong", [1, 2]],
   ])("converts string to bytes", (str, bytes) => {
     expect(binaryStringToBytes(str)).toEqual(new Uint8Array(bytes));
   });
