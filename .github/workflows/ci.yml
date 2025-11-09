@@ -93,3 +93,31 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: python/dist
+
+  typescript-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: typescript
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+
+      - run: npm ci
+      - run: npm run lint
+        id: lint
+      - run: npm run typecheck
+        # run typecheck even if lint failed
+        if: success() || steps.lint.conclusion == 'failure'
+
+  typescript-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: typescript
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+
+      - run: npm ci
+      - run: npm run test

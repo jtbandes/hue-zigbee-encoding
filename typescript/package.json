@@ -21,7 +21,9 @@
   "scripts": {
     "prepack": "tsc -b tsconfig.json tsconfig.cjs.json",
     "build": "tsc -b tsconfig.json tsconfig.cjs.json",
-    "test": "vitest run"
+    "lint": "eslint",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.eslint.json"
   },
   "devDependencies": {
     "@foxglove/eslint-plugin": "2.1.0",

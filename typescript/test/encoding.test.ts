@@ -16,6 +16,7 @@ function binaryStringToBytes(str: string): Uint8Array {
 }
 
 describe("binaryStringToBytes", () => {
+  const x: number = "hi";
   it.each([
     ["", []],
     ["\x7f", [0x7f]],
