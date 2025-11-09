@@ -1,6 +1,6 @@
 [project]
 name = "hue-zigbee-encoding"
-version = "0.1.0"
+version = "1.0.0"
 description = "Binary encoding and decoding of Zigbee messages for Hue lights"
 authors = [{ name = "Jacob Bandes-Storch" }]
 readme = "README.md"
