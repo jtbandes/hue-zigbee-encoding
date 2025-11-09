@@ -157,7 +157,7 @@ export type HueLightGradient = {
  * Gradient scale and offset parameters (for light strips). Values can be
  * between 0 and 31.875 in increments of 0.125 (1/8).
  */
-export type HueLightGradientParams  = {
+export type HueLightGradientParams = {
   /**
    * Number of colors that should fit on the light strip. Ignored in the
    * "scattered" gradient style. A value of 0 is special, blending all the
