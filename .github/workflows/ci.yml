@@ -102,6 +102,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v6
+        with:
+          node-version: 24
 
       - run: npm ci
       - run: npm run lint
@@ -118,6 +120,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v6
+        with:
+          node-version: 24
 
       - run: npm ci
       - run: npm run test
@@ -133,6 +137,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v6
+        with:
+          node-version: 24
 
       - run: npm --version
       - run: npm ci
